@@ -1,5 +1,5 @@
 """
-Deep.Meta Slab Allocation Simulator
+Slab Allocation Simulator
 
 Generates realistic steel mill inventory and order data,
 runs the ILP allocator, and produces a planner-facing report
