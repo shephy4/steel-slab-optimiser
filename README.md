@@ -1,6 +1,6 @@
 # Slab Allocation System
 
-![From a tangled problem to a signed-off plan](steel-slab-case-study-story.gif)
+![From a tangled problem to a signed-off plan](steel-slab-journey_1.gif)
 
 A steel mill cuts large slabs to fill customer orders, and whatever doesn't fit becomes waste.
 This tool looks at every slab and every order at once, gives the most important customers a slab first,
