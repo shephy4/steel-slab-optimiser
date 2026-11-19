@@ -1,4 +1,23 @@
-# Deep.Meta Slab Allocation System
+# Slab Allocation System
+
+![From a tangled problem to a signed-off plan](steel-slab-journey.gif)
+
+A steel mill cuts large slabs to fill customer orders, and whatever doesn't fit becomes waste.
+This tool looks at every slab and every order at once, gives the most important customers a slab first,
+then picks the arrangement that leaves the least steel unused. It explains its plan in plain English,
+and a planner always makes the final call.
+
+## Results
+
+| What was tested | Result |
+|---|---|
+| Unit tests | 5 of 5 pass |
+| Multi-order test (solver must pick the best pairing) | 2.0 m waste, 90.91% utilisation |
+| Simulated run: 30 slabs, 20 orders | Planned in 0.072 s |
+| Orders filled in that run | 11 filled, 9 explained (mostly no slab long enough) |
+| Waste and utilisation in that run | 38.6 m, 66.23% |
+
+Full case study: [link to your portfolio page]
 
 An intelligent slab-to-order allocation system for steel plate mills, designed to maximise material utilisation and minimise yield loss using Integer Linear Programming (ILP), with LLM-generated natural language summaries for planners.
 
@@ -6,9 +25,9 @@ An intelligent slab-to-order allocation system for steel plate mills, designed t
 
 ## Context
 
-Deep.Meta's commercial product, SLICE, helps planners select slabs for customer orders through a recommendation-based co-pilot interface. This system takes a complementary approach: rather than recommending one match at a time, it solves the entire allocation problem globally and simultaneously using ILP, guaranteeing the optimal assignment across all slabs and orders in a single planning run.
+The commercial product, SLICE, helps planners select slabs for customer orders through a recommendation-based co-pilot interface. This system takes a complementary approach: rather than recommending one match at a time, it solves the entire allocation problem globally and simultaneously using ILP, guaranteeing the optimal assignment across all slabs and orders in a single planning run.
 
-The `calculate_required_length` stub used here is designed to integrate directly with Deep.Meta's Deep.Optimiser PhyX, which uses real-time furnace sensor data and material science models to compute the precise slab length required for rolling each plate.
+The `calculate_required_length` stub here is designed to integrate directly with ptimiser PhyX, which uses real-time furnace sensor data and material science models to compute the precise slab length required to roll each plate.
 
 ---
 
@@ -27,7 +46,7 @@ In a plate mill, steel slabs are reheated and rolled into plates for customer or
 
 ## Assumptions
 
-1. **Order priority is not specified in the brief.** Real steel mills operate with varying customer urgency levels (VIP accounts, delivery deadlines, contract penalties). We have added a `priority` field (1=normal, 2=high, 3=urgent) that determines which orders are served first when slabs are scarce. Priority has no effect on waste — waste is determined entirely by how well a slab's length fits the order's requirements, independently for each pair. This field can be removed if all orders are treated equally.
+1. **Order priority is not specified in the brief.** Real steel mills operate with varying customer urgency levels (VIP accounts, delivery deadlines, contract penalties). We added a `priority` field (1=normal, 2=high, 3=urgent) to determine which orders are served first when slabs are scarce. Priority has no effect on waste — waste is determined entirely by how well a slab's length fits the order's requirements, independently for each pair. This field can be removed if all orders are treated equally.
 
 2. **All plates in an order share the same grade and quality specification.**
 
@@ -87,7 +106,7 @@ Maximise: M × Σ(priority[o] × y[o])  −  Σ(waste[s,o] × x[s,o])
 1. Each slab assigned to at most one order
 2. Each order assigned to at most one slab
 3. `y[o] = 1` only if a slab is assigned to order `o`
-4. Only compatible slab-order pairs considered
+4. Only compatible slab-order pairs are considered
 
 ### Feasibility Reporting
 
@@ -188,7 +207,7 @@ After the ILP solver runs, the system passes the allocation results to Groq (lla
 1. **A planner-facing operations summary** — overall utilisation, waste, any patterns in failures, and actionable recommendations in plain English
 2. **Per-order infeasibility explanations** — when an order fails, the LLM explains why in plain English and suggests a concrete next step for the planner
 
-This mirrors Deep.Meta's philosophy of making AI outputs accessible to operators on the shop floor, not just engineers.
+This mirrors the philosophy of making AI outputs accessible to operators on the shop floor, not just engineers.
 
 ---
 
