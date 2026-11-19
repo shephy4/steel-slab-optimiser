@@ -6,7 +6,7 @@ from models.models import Slab, Order, AllocationResult, AllocationPlan
 def calculate_required_length(slab: Slab, plate_order: Order) -> float:
     """
     Stub for the provided function.
-    In production this integrates with Deep.Meta's Deep.Optimiser PhyX,
+    In production this integrates with Deep.Optimiser PhyX,
     which uses real-time furnace sensor data and material science models
     to compute the exact slab length required for rolling.
     For now we sum plate required lengths directly.
